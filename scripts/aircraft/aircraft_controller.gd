@@ -176,11 +176,11 @@ func _read_controls(delta: float) -> void:
 	if Input.is_physical_key_pressed(KEY_S):
 		raw_pitch -= 1.0
 	if Input.is_physical_key_pressed(KEY_A):
-		raw_roll -= 1.0
-		raw_yaw += 0.45
-	if Input.is_physical_key_pressed(KEY_D):
 		raw_roll += 1.0
 		raw_yaw -= 0.45
+	if Input.is_physical_key_pressed(KEY_D):
+		raw_roll -= 1.0
+		raw_yaw += 0.45
 	if Input.is_physical_key_pressed(KEY_Q):
 		raw_yaw += 1.0
 	if Input.is_physical_key_pressed(KEY_E):

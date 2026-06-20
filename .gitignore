@@ -8,3 +8,6 @@
 /hallownest-*.png
 /hallownest-*.png.import
 /README_GODOT.md
+
+# Godot may create imports for exported web files when exporting into docs/.
+/docs/*.import
