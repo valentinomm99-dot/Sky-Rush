@@ -1,0 +1,56 @@
+[gd_scene load_steps=8 format=3]
+
+[sub_resource type="StandardMaterial3D" id="Material_floor"]
+albedo_color = Color(0.36, 0.38, 0.37, 1)
+roughness = 0.9
+
+[sub_resource type="StandardMaterial3D" id="Material_column"]
+albedo_color = Color(0.28, 0.36, 0.48, 1)
+roughness = 0.75
+
+[sub_resource type="StandardMaterial3D" id="Material_marker"]
+albedo_color = Color(0.72, 0.53, 0.3, 1)
+roughness = 0.65
+
+[sub_resource type="BoxMesh" id="Mesh_floor"]
+size = Vector3(8, 0.2, 8)
+
+[sub_resource type="BoxShape3D" id="Shape_floor"]
+size = Vector3(8, 0.2, 8)
+
+[sub_resource type="BoxMesh" id="Mesh_column"]
+size = Vector3(0.7, 1.4, 0.7)
+
+[sub_resource type="BoxShape3D" id="Shape_column"]
+size = Vector3(0.7, 1.4, 0.7)
+
+[node name="TestRoomPrefab" type="Node3D"]
+
+[node name="Floor" type="StaticBody3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Floor"]
+mesh = SubResource("Mesh_floor")
+material_override = SubResource("Material_floor")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor"]
+shape = SubResource("Shape_floor")
+
+[node name="CornerColumnA" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0.7, -3)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CornerColumnA"]
+mesh = SubResource("Mesh_column")
+material_override = SubResource("Material_column")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CornerColumnA"]
+shape = SubResource("Shape_column")
+
+[node name="CornerColumnB" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0.7, 3)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CornerColumnB"]
+mesh = SubResource("Mesh_column")
+material_override = SubResource("Material_marker")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CornerColumnB"]
+shape = SubResource("Shape_column")

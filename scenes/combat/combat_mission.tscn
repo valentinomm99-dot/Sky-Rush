@@ -1,0 +1,58 @@
+[gd_scene load_steps=9 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/aircraft/aircraft.tscn" id="1_aircraft"]
+[ext_resource type="PackedScene" path="res://scenes/camera/aircraft_camera_rig.tscn" id="2_camera"]
+[ext_resource type="PackedScene" path="res://scenes/ui/sky_rush_hud.tscn" id="3_hud"]
+[ext_resource type="Script" path="res://scripts/combat/combat_mission_manager.gd" id="4_manager"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/enemy_aircraft.tscn" id="5_enemy"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_1"]
+sky_top_color = Color(0.29, 0.56, 0.92, 1)
+sky_horizon_color = Color(0.82, 0.91, 0.98, 1)
+ground_bottom_color = Color(0.04, 0.16, 0.24, 1)
+ground_horizon_color = Color(0.2, 0.37, 0.45, 1)
+
+[sub_resource type="Sky" id="Sky_1"]
+sky_material = SubResource("ProceduralSkyMaterial_1")
+
+[sub_resource type="Environment" id="Environment_1"]
+background_mode = 2
+sky = SubResource("Sky_1")
+ambient_light_source = 2
+ambient_light_color = Color(0.72, 0.78, 0.84, 1)
+ambient_light_energy = 0.52
+fog_enabled = true
+fog_light_color = Color(0.58, 0.72, 0.86, 1)
+fog_density = 0.004
+
+[node name="CombatMission" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_1")
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.866025, -0.353553, 0.353553, 0, 0.707107, 0.707107, -0.5, -0.612372, 0.612372, 0, 120, 0)
+light_energy = 2.2
+shadow_enabled = true
+
+[node name="World" type="Node3D" parent="."]
+
+[node name="Enemies" type="Node3D" parent="."]
+
+[node name="Aircraft" parent="." instance=ExtResource("1_aircraft")]
+transform = Transform3D(1, 0, 0, 0, 0.997785, -0.066519, 0, 0.066519, 0.997785, 0, 46, 40)
+max_altitude = 150.0
+
+[node name="AircraftCameraRig" parent="." instance=ExtResource("2_camera")]
+target_path = NodePath("../Aircraft")
+
+[node name="HUD" parent="." instance=ExtResource("3_hud")]
+
+[node name="CombatMissionManager" type="Node" parent="."]
+script = ExtResource("4_manager")
+aircraft_path = NodePath("../Aircraft")
+camera_rig_path = NodePath("../AircraftCameraRig")
+hud_path = NodePath("../HUD")
+world_path = NodePath("../World")
+enemy_parent_path = NodePath("../Enemies")
+enemy_scene = ExtResource("5_enemy")

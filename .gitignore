@@ -1,0 +1,9 @@
+.godot/
+.tools/
+
+# Old web prototype files outside the Godot project.
+index.html
+app.js
+styles.css
+hallownest-*.png
+README_GODOT.md
