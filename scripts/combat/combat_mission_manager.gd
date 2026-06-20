@@ -67,6 +67,9 @@ func _connect_player_systems() -> void:
 	aircraft.health_changed.connect(hud.set_health)
 	aircraft.destroyed.connect(_on_player_destroyed)
 	aircraft.crashed.connect(_on_player_crashed)
+	hud.resume_requested.connect(_on_resume_requested)
+	hud.restart_requested.connect(_start_mission)
+	hud.lobby_requested.connect(_return_to_lobby)
 
 	var weapons: Node = aircraft.get_node_or_null("WeaponController")
 	if weapons != null:
@@ -162,6 +165,17 @@ func _set_paused(value: bool) -> void:
 	_paused = value
 	get_tree().paused = value
 	hud.show_pause_menu(value)
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE if value else Input.MOUSE_MODE_CAPTURED
+
+
+func _on_resume_requested() -> void:
+	_set_paused(false)
+
+
+func _return_to_lobby() -> void:
+	_set_paused(false)
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	get_tree().change_scene_to_file("res://scenes/main.tscn")
 
 
 func _apply_combat_bounds() -> void:

@@ -1,6 +1,10 @@
 class_name SkyRushHUD
 extends CanvasLayer
 
+signal resume_requested
+signal restart_requested
+signal lobby_requested
+
 var speed_label: Label
 var altitude_label: Label
 var turbo_bar: ProgressBar
@@ -20,6 +24,9 @@ var center_label: Label
 var controls_label: Label
 var pause_overlay: ColorRect
 var pause_label: Label
+var resume_button: Button
+var restart_button: Button
+var lobby_button: Button
 
 
 func _ready() -> void:
@@ -103,6 +110,8 @@ func show_controls(visible: bool) -> void:
 
 func show_pause_menu(visible: bool) -> void:
 	pause_overlay.visible = visible
+	if visible:
+		resume_button.grab_focus()
 
 
 func _build_hud() -> void:
@@ -190,14 +199,38 @@ func _build_hud() -> void:
 	pause_overlay.set_anchors_preset(Control.PRESET_FULL_RECT)
 	root.add_child(pause_overlay)
 
+	var pause_menu := VBoxContainer.new()
+	pause_menu.name = "PauseMenu"
+	pause_menu.set_anchors_preset(Control.PRESET_CENTER)
+	pause_menu.offset_left = -180.0
+	pause_menu.offset_top = -145.0
+	pause_menu.offset_right = 180.0
+	pause_menu.offset_bottom = 145.0
+	pause_menu.add_theme_constant_override("separation", 12)
+	pause_overlay.add_child(pause_menu)
+
 	pause_label = Label.new()
 	pause_label.name = "PauseLabel"
-	pause_label.text = "PAUSA\nEsc para continuar\nR para reiniciar"
+	pause_label.text = "PAUSA"
 	pause_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	pause_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	pause_label.set_anchors_preset(Control.PRESET_FULL_RECT)
 	pause_label.add_theme_font_size_override("font_size", 44)
-	pause_overlay.add_child(pause_label)
+	pause_menu.add_child(pause_label)
+
+	resume_button = _make_pause_button(pause_menu, "Continuar")
+	resume_button.pressed.connect(func() -> void: resume_requested.emit())
+
+	restart_button = _make_pause_button(pause_menu, "Reiniciar")
+	restart_button.pressed.connect(func() -> void: restart_requested.emit())
+
+	lobby_button = _make_pause_button(pause_menu, "Volver al lobby")
+	lobby_button.pressed.connect(func() -> void: lobby_requested.emit())
+
+	var hint_label := Label.new()
+	hint_label.text = "Esc continuar  R reiniciar"
+	hint_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	hint_label.add_theme_font_size_override("font_size", 17)
+	hint_label.add_theme_color_override("font_color", Color(0.82, 0.88, 0.96, 1.0))
+	pause_menu.add_child(hint_label)
 
 
 func _make_label(parent: Node, text: String, font_size: int) -> Label:
@@ -219,3 +252,12 @@ func _make_progress_bar(parent: Node, node_name: String, color: Color) -> Progre
 	bar.modulate = color
 	parent.add_child(bar)
 	return bar
+
+
+func _make_pause_button(parent: Node, text: String) -> Button:
+	var button := Button.new()
+	button.text = text
+	button.custom_minimum_size = Vector2(360.0, 44.0)
+	button.add_theme_font_size_override("font_size", 20)
+	parent.add_child(button)
+	return button

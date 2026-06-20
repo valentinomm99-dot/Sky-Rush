@@ -26,6 +26,8 @@ Al iniciar aparece un menu con:
 - `Controles`
 - `Salir`
 
+Durante una carrera o mision, pulsa `Escape` para abrir pausa. Desde ahi puedes continuar, reiniciar o volver al lobby principal.
+
 ## Controles
 
 - `W`: bajar la nariz del avion.
@@ -39,7 +41,7 @@ Al iniciar aparece un menu con:
 - `Click derecho`: misil.
 - `C`: cambiar entre camara de tercera persona y camara cercana/cabina.
 - `R`: reiniciar carrera o mision.
-- `Escape`: pausar o reanudar.
+- `Escape`: pausar o reanudar. En pausa puedes volver al lobby.
 
 ## Carrera de anillos
 
